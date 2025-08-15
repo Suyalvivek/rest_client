@@ -11,8 +11,9 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:5173' })); // Allow requests from our frontend
-app.use(express.json()); // To parse JSON request bodies
+app.use(cors({ origin: process.env.FRONTEND_URL })); // Allow requests from our frontend
+app.use(express.json({ limit: '50mb' }));
+ // To parse JSON request bodies
 app.use('/api/v1',indexRoute);
 // Health check route
 app.get('/', (req, res) => {
@@ -23,13 +24,13 @@ app.get('/', (req, res) => {
 const startServer = async () => {
   try {
     await initORM();
-    console.log('✅ Database connected successfully.');
+    console.log('Database connected successfully.');
 
     app.listen(PORT, () => {
-      console.log(`🚀 Server listening on http://localhost:${PORT}`);
+      console.log(`Server listening on http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.error('❌ Failed to start the server:', error);
+    console.error('Failed to start the server:', error);
     process.exit(1);
   }
 };

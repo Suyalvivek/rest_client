@@ -7,8 +7,8 @@ let orm: MikroORM<SqliteDriver>;
 export const initORM = async () => {
   orm = await MikroORM.init({
     // Fix the entity paths to be relative to the project root
-    entities: ['src/shared/types/*.ts'],
-    entitiesTs: ['src/shared/types/*.ts'], 
+   entities: ['dist/shared/types/*.js'], // Use the compiled JS path for production
+    entitiesTs: ['src/shared/types/*.ts'],
     dbName: 'request-history.sqlite3',
     driver: SqliteDriver,
     debug: process.env.NODE_ENV !== 'production',

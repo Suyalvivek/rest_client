@@ -1,22 +1,28 @@
 // backend/src/db/connection.ts
 import { MikroORM } from '@mikro-orm/core';
-import { SqliteDriver } from '@mikro-orm/sqlite';
+import { PostgreSqlDriver } from '@mikro-orm/postgresql'; // Using the PostgreSQL driver
 
-let orm: MikroORM<SqliteDriver>;
+let orm: MikroORM<PostgreSqlDriver>;
 
 export const initORM = async () => {
   orm = await MikroORM.init({
-    // Fix the entity paths to be relative to the project root
-   entities: ['dist/shared/types/*.js'], // Use the compiled JS path for production
+    // Entity paths for compiled JS (for production) and TS (for development)
+    entities: ['dist/shared/types/*.js'],
     entitiesTs: ['src/shared/types/*.ts'],
-    dbName: 'request-history.sqlite3',
-    driver: SqliteDriver,
+    // Connects using the connection string from your .env file
+    clientUrl: process.env.DB_CONNECTION_STRING,
+    driver: PostgreSqlDriver,
     debug: process.env.NODE_ENV !== 'production',
+    // Important: Enables the required SSL connection for cloud databases
+    driverOptions: {
+      connection: {
+        ssl: true,
+      },
+    },
   });
-  
-  // This helps ensure the database schema is up-to-date with your entities
-  await orm.getSchemaGenerator().updateSchema();
 
+  // Automatically updates the database schema to match your entities
+  await orm.getSchemaGenerator().updateSchema();
   return orm;
 };
 

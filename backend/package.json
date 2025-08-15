@@ -12,14 +12,14 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@mikro-orm/sqlite": "^6.4.16",
+"dependencies": {
+    "@mikro-orm/postgresql": "^6.4.16",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "mikro-orm": "^6.4.16",
-    "sqlite3": "^5.1.7"
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
